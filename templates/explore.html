@@ -1,0 +1,50 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+    <h1>Explore blockchain</h1>
+    <hr>
+    <div id="blocks-list">
+        <p class="text-muted text-center">Loading...</p>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.getElementById('nav-item-explore').classList.add('active');
+
+        function updateBlocksList() {
+            fetch('/api/dumpChain')
+                .then((res) => res.json())
+                .then((blocks) => {
+                    let blocksHtml = `<table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Block</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Document checksum</th>
+                        </tr>`;
+
+                    for (const block of blocks) {
+                        for (const doc of block.d) {
+                            blocksHtml += `<tr>
+                                <td><a href="/block/${block.h}">#${block.i}</a></td>
+                                <td>${new Date(block.t * 1000).toLocaleString()}</td>
+                                <td>${doc.d}</td>
+                                <td>${doc.c}</td>
+                            </tr>`;
+                        }
+                    }
+
+                    blocksHtml += `</table>`;
+
+                    if (blocks.length == 0) {
+                        blocksHtml = `<p class="text-muted text-center">Blockchain is empty</p>`;
+                    }
+
+                    document.getElementById('blocks-list').innerHTML = blocksHtml;
+                });
+        }
+
+        updateBlocksList();
+    </script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+
+    {% if block %}
+        <h1>Block #{{ block['index'] }}</h1>
+        <hr>
+        <div class="card card-default">
+            <div class="card-header">Block details</div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Block number</th>
+                        <td>#{{ block['index'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Hash</th>
+                        <td>{{ block['hash'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Timestamp</th>
+                        <td>{{ block['timestamp'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Previous hash</th>
+                        <td>
+                            {% if block['previous_hash'] %}
+                            <a href="/block/{{ block['previous_hash'] }}">
+                                {{ block['previous_hash'] }}
+                            </a>
+                            {% else %}
+                                <span class="text-muted">Genesis block doesn't have a previous hash</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card card-default mt-4">
+            <div class="card-header">Documents in block</div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Description</th>
+                        <th>Checksum</th>
+                    </tr>
+                    {% for doc in block['documents'] %}
+                        <tr>
+                            <td>{{ doc.d }}</td>
+                            <td>{{ doc.c }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="text-center">
+            <h2>Block not found!</h2>
+        </div>
+    {% endif %}
+    <div class="text-center pt-4">
+        <a href="/" class="btn btn-primary">Go back to Explorer</a>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    </script>
+{% endblock %}

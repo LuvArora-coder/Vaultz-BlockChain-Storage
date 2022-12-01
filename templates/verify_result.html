@@ -1,0 +1,62 @@
+{% extends "_layout.html" %}
+
+{% block body %}
+
+    <h1>Verify document</h1>
+    <hr>
+    <div class="card card-default">
+        <div class="card-header">Verification result</div>
+            <div class="card-body">
+                {% if result %}
+                    <div class="alert alert-success">
+                        The file with given checksum found!
+                    </div>
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Included in block</th>
+                            <td>
+                                <a href="/block/{{ result['block']['hash'] }}">
+                                    #{{ result['block']['index'] }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ result['doc']['d'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Checksum</th>
+                            <td>{{ result['doc']['c'] }}</td>
+                        </tr>
+                    </table>
+                {% else %}
+                    <div class="alert alert-danger">
+                        The file with given checksum cannot be found in blockchain.
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <div class="card card-default mt-4">
+        <div class="card-header">Verify document</div>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="upload-document-file">Select file to upload</label>
+                    <input type="file" name="file" class="form-control-file" id="upload-document-file" />
+                </div>
+            </div>
+            <div class="card-body text-center">
+                <button type="submit" id="upload-document-submit" class="btn btn-success">Verify document</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.getElementById('nav-item-verify').classList.add('active');
+    </script>
+{% endblock %}
